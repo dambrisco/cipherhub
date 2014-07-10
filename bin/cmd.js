@@ -19,6 +19,7 @@ var argv = minimist(process.argv.slice(2), {
         r: [ 'rm', 'remove' ],
         q: 'quiet',
         h: 'help'
+        k: 'keyname'
     },
     'default': {
         encoding: 'base64'
@@ -40,7 +41,7 @@ if (argv.add) {
         return process.exit(22);
     }
     db = getDb();
-    
+
     return process.stdin.pipe(concat(function (body) {
         db.put(user, body.toString('utf8'), function (err) {
             if (err) {
@@ -67,7 +68,7 @@ if (argv.remove) {
         return process.exit(23);
     }
     db = getDb();
-    
+
     return db.del(user, function (err) {
         if (err) {
             console.error(err);
@@ -85,10 +86,13 @@ if(!argv.decrypt && (argv._.length === 0 && !process.stdin.isTTY))
 if (argv.decrypt) {
     var keyfile = argv.decrypt;
     if (keyfile === true) {
-        keyfile = path.join(
-            process.env.HOME || process.env.USERPROFILE,
-            '.ssh', 'id_rsa'
-        );
+      var keyname = 'id_rsa';
+      if (argv.keyname)
+        keyname = argv.keyname;
+      keyfile = path.join(
+          process.env.HOME || process.env.USERPROFILE,
+          '.ssh', keyname
+      );
     }
     return fs.readFile(keyfile, function (err, privkey) {
         if (err) {
@@ -144,7 +148,7 @@ keyOf(user, function (err, keys, fromGithub) {
         );
         return process.exit(21);
     }
-    
+
     if (fromGithub && argv.save !== false) {
         db.put(user, keys[0], function (err) {
             if (err) {
@@ -159,7 +163,7 @@ keyOf(user, function (err, keys, fromGithub) {
         });
     }
     else encrypt();
-    
+
     function encrypt () {
         var enc = rsa.encrypt(keys[0], { encoding: argv.encoding });
         process.stdin.pipe(enc).pipe(process.stdout);
