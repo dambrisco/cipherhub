@@ -21,17 +21,16 @@ var argv = minimist(process.argv.slice(2), {
   }
 });
 
+// User has requested help or did not provide a github username and did not request a decrypt
+if (argv.help || (argv._.length === 0 && !argv.decrypt)) {
+  return fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout);
+}
+
 process.stdin.pipe(concat(function(data) {
   main(argv, data);
 }));
 
 function main(argv, data) {
-  if (argv.help) {
-    return fs.createReadStream(__dirname + '/usage.txt')
-    .pipe(process.stdout)
-    ;
-  }
-
   //assume the user is decrypting when there is no args,
   //but they are piping something in.
   if(!argv.decrypt && (argv._.length === 0 && !process.stdin.isTTY))
@@ -72,11 +71,6 @@ function main(argv, data) {
         dec.end(lines[0]);
       }
     });
-  }
-
-  if (argv._.length === 0) {
-    fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout);
-    return;
   }
 
   var user = argv._[0];
