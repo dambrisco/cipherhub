@@ -44,34 +44,15 @@ cipherhub USERNAME {OPTIONS} < message.txt
 
   Create an encrypted message for USERNAME on stdin.
  
-  If there isn't yet a local key stored for USERNAME, request a key from
+  Requests keys from
   https://github.com/$USERNAME.keys
  
-  If there are multiple RSA keys, the operation fails and you will need to
-  add the key you want manually with `cipherhub --add`.
   If there are no RSA keys, the command fails with a nonzero exit code.
  
   OPTIONS are:
  
-    --no-github     don't request key data from github, just fail
-    --no-save       don't automatically save keys fetched from github
     --quiet, -q     suppress extra output
     --encoding, -e  output encoding to use. default: base64
-
-cipherhub --add USERNAME < id_rsa.pub
-cipherhub -a USERNAME < id_rsa.pub
-
-  Set the public key for USERNAME from stdin.
-
-cipherhub --remove USERNAME
-cipherhub -r USERNAME
-
-  Remove a USERNAME from the local key list.
-
-cipherhub --list
-cipherhub -l
-
-  List all the keys in the local key list.
 
 cipherhub --decrypt PRIVKEY {OPTIONS}
 cipherhub -d PRIVKEY {OPTIONS}
