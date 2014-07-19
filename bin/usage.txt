@@ -8,8 +8,8 @@ cipherhub USERNAME {OPTIONS} < message.txt
 
   OPTIONS are:
 
-    --quiet, -q     suppress extra output
-    --encoding, -e  output encoding to use. default: base64
+    --quiet,    -q     suppress extra output
+    --encoding, -e     output encoding to use. default: base64
 
 cipherhub --decrypt PRIVKEY {OPTIONS}
 cipherhub -d PRIVKEY {OPTIONS}
