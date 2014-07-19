@@ -35,8 +35,9 @@ function main(argv, data) {
 
   //assume the user is decrypting when there is no args,
   //but they are piping something in.
-  if(!argv.decrypt && (argv._.length === 0 && !process.stdin.isTTY))
+  if(!argv.decrypt && (argv._.length === 0 && !process.stdin.isTTY)) {
     argv.decrypt = true
+  }
 
   if (argv.decrypt) {
     return decrypt(argv.keyname, argv.encoding, data)
