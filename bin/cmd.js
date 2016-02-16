@@ -5,8 +5,7 @@ var path = require('path');
 var hyperquest = require('hyperquest');
 var stream = require('stream');
 var concat = require('concat-stream');
-var rsa = require('hybrid-rsa-stream');
-var level = require('level');
+var rsa = require('rsa-stream');
 var HOME = process.env.HOME || process.env.USERPROFILE;
 
 var minimist = require('minimist');
